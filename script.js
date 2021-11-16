@@ -1,7 +1,5 @@
 const testInput = document.querySelector("#test");
-let alertes = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}"}];
-
-
+let alertes = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}", last: 0}];
 
 const init = e => {
   setInterval(e => {
@@ -15,13 +13,18 @@ const init = e => {
       if(h === item.h) {
         if((item.m === undefined && m === 0) || item.m === m) {
           if((item.s === undefined && s === 0) || item.s === s) {
-            let notice = item.notice;
-            notice = notice.replace(/(\$\{h\})/g, item.h);
-            notice = notice.replace(/(\$\{m\})/g, item.m === undefined ? 0 : item.m);
-            notice = notice.replace(/(\$\{s\})/g, item.s === undefined ? 0 : item.s);
-            notice = notice.replace(/(\$\{title\})/g, item.title);
-
-            new Notification(item.title, {body: item.notice});
+            const now = `${h}:${m}:${s}`;
+            if(item.last !== now) {
+              let notice = item.notice;
+              notice = notice.replace(/(\$\{h\})/g, item.h);
+              notice = notice.replace(/(\$\{m\})/g, item.m === undefined ? 0 : item.m);
+              notice = notice.replace(/(\$\{s\})/g, item.s === undefined ? 0 : item.s);
+              notice = notice.replace(/(\$\{title\})/g, item.title);
+  
+              new Notification(item.title, {body: notice});
+  
+              item.last = now;
+            }
           }
         }
       }
