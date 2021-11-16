@@ -1,4 +1,4 @@
-let alertes = [{h: 16, m: 20, title: '알림', notice: '15시 48분'}];
+let alertes = [{h: 16, m: 25, title: '알림', notice: '15시 48분'}];
 
 
 
