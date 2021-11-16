@@ -1,3 +1,4 @@
+const testInput = document.querySelector("#test");
 let alertes = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}"}];
 
 
@@ -27,6 +28,10 @@ const init = e => {
     }
   }, 100)
 }
+
+testInput.addEventListener("input", e => {
+  alertes = JSON.parse(testInput.value);
+})
 
 Notification.requestPermission();
 window.onload = init;
