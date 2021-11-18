@@ -82,6 +82,8 @@ const init = e => {
   //   .fail(function(error){
   //       console.log(error);
   //   });
+
+  getAlarmList();
 }
 
 appendAlarm.addEventListener("click", e => {
