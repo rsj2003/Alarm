@@ -1,4 +1,18 @@
-const alertes = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}", last: 0}];
+// const alarms = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}", last: 0}];
+const alarms = localStorage.getItem("alarm-alarms") === null ? [] : localStorage.getItem("alarm-alarms");
+const appendAlarm = document.querySelector("#append-alarm");
+const hour = document.querySelector("#hour");
+const minute = document.querySelector("#minute");
+const second = document.querySelector("#second");
+const su = document.querySelector("#su");
+const mo = document.querySelector("#mo");
+const tu = document.querySelector("#tu");
+const we = document.querySelector("#we");
+const th = document.querySelector("#th");
+const fr = document.querySelector("#fr");
+const sa = document.querySelector("#sa");
+const title = document.querySelector("#title");
+const notice = document.querySelector("#notice");
 
 const init = e => {
   setInterval(e => {
@@ -6,8 +20,8 @@ const init = e => {
     const h = date.getHours();
     const m = date.getMinutes();
     const s = date.getSeconds();
-    for(let i = 0; i < alertes.length; i++) {
-      const item = alertes[i];
+    for(let i = 0; i < alarms.length; i++) {
+      const item = alarms[i];
       
       if(h === item.h) {
         if((item.m === undefined && m === 0) || item.m === m) {
@@ -30,22 +44,38 @@ const init = e => {
     }
   }, 10)
 
-  $.ajax({
-    url:"https://api.twitch.tv/kraken/streams/?offset=0&limit=100&channel=149747285,197886470",
-    type: "GET",
-    dataType:"json",
-    headers: {
-        "Accept": "application/vnd.twitchtv.v5+json",
-        "Client-ID": "lydfnviwkq2qsjdtyszw0sbexqnc08"
-    },
-  })
-    .done(function(channel){
-        console.log(channel);
-    })
-    .fail(function(error){
-        console.log(error);
-    });
+  // $.ajax({
+  //   url:"https://api.twitch.tv/kraken/streams/?offset=0&limit=100&channel=149747285,197886470",
+  //   type: "GET",
+  //   dataType:"json",
+  //   headers: {
+  //       "Accept": "application/vnd.twitchtv.v5+json",
+  //       "Client-ID": "lydfnviwkq2qsjdtyszw0sbexqnc08"
+  //   },
+  // })
+  //   .done(function(channel){
+  //       console.log(channel);
+  //   })
+  //   .fail(function(error){
+  //       console.log(error);
+  //   });
 }
+
+appendAlarm.addEventListener("click", e => {
+  const result = {};
+
+  result.h = hour.value * 1;
+  result.m = minute.value * 1;
+  result.s = second.value * 1;
+
+  result.week = [];
+
+  result.title = title.value;
+  result.notice = notice.value;
+
+  alarms.push(result);
+  localStorage.setItem("alarm-alarms", alarms);
+})
 
 Notification.requestPermission();
 window.onload = init;
