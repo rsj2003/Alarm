@@ -13,6 +13,28 @@ const fr = document.querySelector("#fr");
 const sa = document.querySelector("#sa");
 const title = document.querySelector("#title");
 const notice = document.querySelector("#notice");
+const alarmList = document.querySelector("#alarm-list");
+
+const getAlarmList = e => {
+  const items = alarmList.querySelector(".item");
+  items.forEach(el => el.remove());
+
+  for(let i = 0; i < alarms.length; i++) {
+    const item = alarms[i];
+
+    const $item = document.createElement("div");
+    const $time = document.createElement("h3");
+    const $title = document.createElement("h4");
+    const $notice = document.createElement("p");
+
+    $item.classList.add("item");
+    $time.innerText = `${item.h}:${item.m}${item.s !== 0 ? `:${item.s}` : ""}`;
+    $title.innerText = item.title;
+    $notice.innerText = item.notice;
+    
+    alarmList.append($item);
+  }
+}
 
 const init = e => {
   setInterval(e => {
@@ -20,6 +42,7 @@ const init = e => {
     const h = date.getHours();
     const m = date.getMinutes();
     const s = date.getSeconds();
+
     for(let i = 0; i < alarms.length; i++) {
       const item = alarms[i];
       
@@ -75,6 +98,8 @@ appendAlarm.addEventListener("click", e => {
 
   alarms.push(result);
   localStorage.setItem("alarm-alarms", alarms);
+
+  getAlarmList();
 })
 
 Notification.requestPermission();
