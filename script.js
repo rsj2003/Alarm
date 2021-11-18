@@ -1,5 +1,4 @@
-const testInput = document.querySelector("#test");
-let alertes = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}", last: 0}];
+const alertes = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}", last: 0}];
 
 const init = e => {
   setInterval(e => {
@@ -29,12 +28,24 @@ const init = e => {
         }
       }
     }
-  }, 100)
-}
+  }, 10)
 
-testInput.addEventListener("input", e => {
-  alertes = JSON.parse(testInput.value);
-})
+  $.ajax({
+    url:"https://api.twitch.tv/kraken/streams/?offset=0&limit=100&channel=149747285,197886470",
+    type: "GET",
+    dataType:"json",
+    headers: {
+        "Accept": "application/vnd.twitchtv.v5+json",
+        "Client-ID": "lydfnviwkq2qsjdtyszw0sbexqnc08"
+    },
+  })
+    .done(function(channel){
+        console.log(channel);
+    })
+    .fail(function(error){
+        console.log(error);
+    });
+}
 
 Notification.requestPermission();
 window.onload = init;

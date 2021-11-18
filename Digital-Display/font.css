@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Digital Display';
+    src: url('Digital-Display.eot');
+    src: url('Digital-Display.eot?#iefix') format('embedded-opentype'),
+        url('Digital-Display.woff2') format('woff2'),
+        url('Digital-Display.woff') format('woff'),
+        url('Digital-Display.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

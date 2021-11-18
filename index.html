@@ -5,11 +5,33 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="Digital-Display/font.css">
   <link rel="stylesheet" href="styel.css">
+  <script src="jQuery-3.6.0.js"></script>
 </head>
 <body>
-  <textarea id="test"></textarea>
+  <div id="alarm-setting">
+    <h2>알람</h2>
+    <input type="checkbox" id="su" class="none"><input type="checkbox" id="mo" class="none"><input type="checkbox" id="tu" class="none"><input type="checkbox" id="we" class="none"><input type="checkbox" id="th" class="none"><input type="checkbox" id="fr" class="none"><input type="checkbox" id="sa" class="none">
+    <div class="labels">
+      <label for="su"></label>일<label for="mo">월</label><label for="tu">화</label><label for="we">수</label><label for="th">목</label><label for="fr">금</label><label for="sa">토</label>
+    </div>
+    <p><input type="number" id="hour" min="0">시 <input type="number" id="minute" min="0">분 <input type="number" id="second" min="0" value="0">초</p>
+    <button>알람 추가</button>
+  </div>
+  <div id="alarm-list">
 
+  </div>
+  <div id="timer-setting">
+    <input type="radio" name="timer-type" id="set-timer"><input type="radio" name="timer-type" id="set-stopwatch">
+    <h2><label for="set-timer"></label><label for="set-stopwatch"></label></h2>
+  </div>
+  <div id="time">
+    <span class="h"></span>:<span class="m"></span>:<span class="s"></span>
+  </div>
+  <div id="timer">
+    <span class="h"></span>:<span class="m"></span>:<span class="s"></span>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
