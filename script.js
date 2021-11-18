@@ -1,5 +1,5 @@
 // const alarms = [{h: 16, m: 30, title: "알림", notice: "${h}시 ${m}분 ${s}초 - ${title}", last: 0}];
-const alarms = localStorage.getItem("alarm-alarms") === null ? [] : localStorage.getItem("alarm-alarms");
+const alarms = localStorage.getItem("alarm-alarms") === null ? [] : JSON.parse(localStorage.getItem("alarm-alarms"));
 const appendAlarm = document.querySelector("#append-alarm");
 const hour = document.querySelector("#hour");
 const minute = document.querySelector("#minute");
@@ -17,7 +17,7 @@ const alarmList = document.querySelector("#alarm-list");
 
 const getAlarmList = e => {
   const items = alarmList.querySelectorAll(".item");
-  console.log(".item")
+  console.log(items)
   items.forEach(el => el.remove());
 
   for(let i = 0; i < alarms.length; i++) {
@@ -104,7 +104,7 @@ appendAlarm.addEventListener("click", e => {
   result.notice = notice.value;
 
   alarms.push(result);
-  localStorage.setItem("alarm-alarms", alarms);
+  localStorage.setItem("alarm-alarms", JSON.stringify(alarms));
 
   getAlarmList();
 })
