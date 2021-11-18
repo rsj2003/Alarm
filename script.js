@@ -17,6 +17,7 @@ const alarmList = document.querySelector("#alarm-list");
 
 const getAlarmList = e => {
   const items = alarmList.querySelectorAll(".item");
+  console.log(".item")
   items.forEach(el => el.remove());
 
   for(let i = 0; i < alarms.length; i++) {
@@ -31,6 +32,10 @@ const getAlarmList = e => {
     $time.innerText = `${item.h}:${item.m}${item.s !== 0 ? `:${item.s}` : ""}`;
     $title.innerText = item.title;
     $notice.innerText = item.notice;
+
+    $item.append($time);
+    $item.append($title);
+    $item.append($notice);
     
     alarmList.append($item);
   }
