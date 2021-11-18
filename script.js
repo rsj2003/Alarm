@@ -16,7 +16,7 @@ const notice = document.querySelector("#notice");
 const alarmList = document.querySelector("#alarm-list");
 
 const getAlarmList = e => {
-  const items = alarmList.querySelector(".item");
+  const items = alarmList.querySelectorAll(".item");
   items.forEach(el => el.remove());
 
   for(let i = 0; i < alarms.length; i++) {
