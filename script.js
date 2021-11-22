@@ -4,16 +4,52 @@ const appendAlarm = document.querySelector("#append-alarm");
 const hour = document.querySelector("#hour");
 const minute = document.querySelector("#minute");
 const second = document.querySelector("#second");
-const su = document.querySelector("#su");
-const mo = document.querySelector("#mo");
-const tu = document.querySelector("#tu");
-const we = document.querySelector("#we");
-const th = document.querySelector("#th");
-const fr = document.querySelector("#fr");
-const sa = document.querySelector("#sa");
+const week = document.querySelectorAll(".week");
+const allWeek = document.querySelector("#all-week");
 const title = document.querySelector("#title");
 const notice = document.querySelector("#notice");
 const alarmList = document.querySelector("#alarm-list");
+
+const th = document.querySelector("#time .h");
+const tm = document.querySelector("#time .m");
+const ts = document.querySelector("#time .s");
+const trh = document.querySelector("#timer .h");
+const trm = document.querySelector("#timer .m");
+const trs = document.querySelector("#timer .s");
+
+const timer = {h: 0, m: 0, s: 0};
+
+const fillZero = (width, str) => {
+  if(str >= 0 || str < 0) str = str + "";
+  return str.length >= width ? str : new Array(width - str.length + 1).join("0") + str;
+}
+
+const inputEventHour = e => {
+  let val = Math.round(hour.value * 1);
+
+  if(val < 0) val = 24 + (val % 24);
+  if(val > 23) val = val % 24;
+
+  hour.value = val;
+}
+
+const inputEventMinute = e => {
+  let val = Math.round(minute.value * 1);
+
+  if(val < 0) val = 60 + (val % 60);
+  if(val > 59) val = val % 60;
+
+  minute.value = val;
+}
+
+const inputEventSecond = e => {
+  let val = Math.round(second.value * 1);
+
+  if(val < 0) val = 60 + (val % 60);
+  if(val > 59) val = val % 60;
+
+  second.value = val;
+}
 
 const getAlarmList = e => {
   const items = alarmList.querySelectorAll(".item");
@@ -27,15 +63,28 @@ const getAlarmList = e => {
     const $time = document.createElement("h3");
     const $title = document.createElement("h4");
     const $notice = document.createElement("p");
+    const $delete = document.createElement("button");
 
     $item.classList.add("item");
+    $delete.classList.add("delete");
     $time.innerText = `${item.h}:${item.m}${item.s !== 0 ? `:${item.s}` : ""}`;
     $title.innerText = item.title;
     $notice.innerText = item.notice;
+    $delete.innerText = "삭제";
 
+    $delete.addEventListener("click", e => {
+      if(confirm(`"${item.title}" 알람을 삭제하겠습니까?`)) {
+        alarms.splice(i);
+        localStorage.setItem("alarm-alarms", JSON.stringify(alarms));
+
+        getAlarmList();
+      }
+    })
+    
     $item.append($time);
     $item.append($title);
     $item.append($notice);
+    $item.append($delete);
     
     alarmList.append($item);
   }
@@ -47,6 +96,15 @@ const init = e => {
     const h = date.getHours();
     const m = date.getMinutes();
     const s = date.getSeconds();
+    const ms = date.getMilliseconds();
+
+    th.innerText = fillZero(2, h);
+    tm.innerText = fillZero(2, m);
+    ts.innerText = fillZero(2, s);
+
+    trh.innerText = fillZero(2, timer.h);
+    trm.innerText = fillZero(2, timer.m);
+    trs.innerText = fillZero(2, timer.s);
 
     for(let i = 0; i < alarms.length; i++) {
       const item = alarms[i];
@@ -100,6 +158,12 @@ appendAlarm.addEventListener("click", e => {
 
   result.week = [];
 
+  week.forEach(el => {
+    if(el.checked) result.week.push(el.id);
+  })
+
+  if(result.week.length === 0) return alert("알람이 울릴 요일을 선택해주세요.");
+
   result.title = title.value;
   result.notice = notice.value;
 
@@ -107,6 +171,26 @@ appendAlarm.addEventListener("click", e => {
   localStorage.setItem("alarm-alarms", JSON.stringify(alarms));
 
   getAlarmList();
+})
+
+hour.addEventListener("input", inputEventHour);
+minute.addEventListener("input", inputEventMinute);
+second.addEventListener("input", inputEventSecond);
+
+week.forEach(el => el.addEventListener("input", e => {
+  let all = true;
+
+  week.forEach(ei => {
+    if(!ei.checked) all = false;
+  })
+
+  allWeek.checked = all;
+}))
+
+allWeek.addEventListener("input", e => {
+  const checked = allWeek.checked;
+
+  week.forEach(el => el.checked = checked);
 })
 
 Notification.requestPermission();
