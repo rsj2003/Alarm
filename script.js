@@ -18,6 +18,7 @@ const trm = document.querySelector("#timer .m");
 const trs = document.querySelector("#timer .s");
 
 const timer = {h: 0, m: 0, s: 0};
+let autoLoad = false;
 
 const fillZero = (width, str) => {
   if(str >= 0 || str < 0) str = str + "";
@@ -127,6 +128,11 @@ const init = e => {
           }
         }
       }
+    }
+
+    if(autoLoad) {
+      window.blur();
+      window.focus();
     }
   }, 10)
 
