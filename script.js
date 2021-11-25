@@ -92,7 +92,7 @@ const getAlarmList = e => {
 }
 
 const init = e => {
-  setInterval(e => {
+  const func = e => {
     const date = new Date();
     const h = date.getHours();
     const m = date.getMinutes();
@@ -134,7 +134,11 @@ const init = e => {
       window.blur();
       window.focus();
     }
-  }, 10)
+
+    interval = setTimeout(func, 10);
+  }
+  
+  let interval = setTimeout(func, 10);
 
   // $.ajax({
   //   url:"https://api.twitch.tv/kraken/streams/?offset=0&limit=100&channel=149747285,197886470",
