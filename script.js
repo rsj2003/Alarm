@@ -10,14 +10,21 @@ const title = document.querySelector("#title");
 const notice = document.querySelector("#notice");
 const alarmList = document.querySelector("#alarm-list");
 
-const th = document.querySelector("#time .h");
-const tm = document.querySelector("#time .m");
-const ts = document.querySelector("#time .s");
-const trh = document.querySelector("#timer .h");
-const trm = document.querySelector("#timer .m");
-const trs = document.querySelector("#timer .s");
+const th = document.querySelector("#time .text-color .h");
+const tm = document.querySelector("#time .text-color .m");
+const ts = document.querySelector("#time .text-color .s");
+const thb = document.querySelector("#time .text-background .h");
+const tmb = document.querySelector("#time .text-background .m");
+const tsb = document.querySelector("#time .text-background .s");
+const trh = document.querySelector("#timer .text-color .h");
+const trm = document.querySelector("#timer .text-color .m");
+const trs = document.querySelector("#timer .text-color .s");
+const trhb = document.querySelector("#timer .text-background .h");
+const trmb = document.querySelector("#timer .text-background .m");
+const trsb = document.querySelector("#timer .text-background .s");
 
 const timer = {h: 0, m: 0, s: 0};
+const setTimeList = [];
 let autoLoad = false;
 
 const fillZero = (width, str) => {
@@ -54,8 +61,22 @@ const inputEventSecond = e => {
 
 const getAlarmList = e => {
   const items = alarmList.querySelectorAll(".item");
-  console.log(items)
+  const date = new Date();
+  const y = date.getFullYear();
+  const mon = date.getMonth();
+  const d = date.getDate();
+  const h = date.getHours();
+  const m = date.getMinutes();
+  const s = date.getSeconds();
+  const ms = date.getMilliseconds();
+  
   items.forEach(el => el.remove());
+
+  for(let i = 0; i < setTimeList.length; i++) {
+    clearTimeout(setTimeList[i]);
+  }
+
+  setTimeList.length = 0;
 
   for(let i = 0; i < alarms.length; i++) {
     const item = alarms[i];
@@ -73,9 +94,33 @@ const getAlarmList = e => {
     $notice.innerText = item.notice;
     $delete.innerText = "삭제";
 
+    let notice = item.notice;
+    notice = notice.replace(/(\$\{h\})/g, item.h);
+    notice = notice.replace(/(\$\{m\})/g, item.m === undefined ? 0 : item.m);
+    notice = notice.replace(/(\$\{s\})/g, item.s === undefined ? 0 : item.s);
+    notice = notice.replace(/(\$\{title\})/g, item.title);
+
+    let waitTime = 0;
+
+    if(h > item.h || (h === item.h && m > item.m) || (h === item.h && m === item.m && s > item.s)) {
+      waitTime = new Date(y, mon, d + 1, item.h, item.m, item.s).getTime() - date.getTime();
+    }else {
+      waitTime = new Date(y, mon, d, item.h, item.m, item.s).getTime() - date.getTime();
+    }
+
+    console.log(waitTime);
+
+    setTimeList.push(setTimeout(e => {
+      new Notification(item.title, {body: notice});
+    }), waitTime);
+
+    setTimeList.push(setTimeout(e => {
+      new Notification(item.title, {body: notice});
+    }), waitTime + (1000 * 60 * 60 * 24));
+
     $delete.addEventListener("click", e => {
       if(confirm(`"${item.title}" 알람을 삭제하겠습니까?`)) {
-        alarms.splice(i);
+        alarms.splice(i, 1);
         localStorage.setItem("alarm-alarms", JSON.stringify(alarms));
 
         getAlarmList();
@@ -102,33 +147,39 @@ const init = e => {
     th.innerText = fillZero(2, h);
     tm.innerText = fillZero(2, m);
     ts.innerText = fillZero(2, s);
+    thb.innerText = fillZero(2, h);
+    tmb.innerText = fillZero(2, m);
+    tsb.innerText = fillZero(2, s);
 
     trh.innerText = fillZero(2, timer.h);
     trm.innerText = fillZero(2, timer.m);
     trs.innerText = fillZero(2, timer.s);
+    trhb.innerText = fillZero(2, timer.h);
+    trmb.innerText = fillZero(2, timer.m);
+    trsb.innerText = fillZero(2, timer.s);
 
-    for(let i = 0; i < alarms.length; i++) {
-      const item = alarms[i];
+    // for(let i = 0; i < alarms.length; i++) {
+    //   const item = alarms[i];
       
-      if(h === item.h) {
-        if((item.m === undefined && m === 0) || item.m === m) {
-          if((item.s === undefined && s === 0) || item.s === s) {
-            const now = `${h}:${m}:${s}`;
-            if(item.last !== now) {
-              let notice = item.notice;
-              notice = notice.replace(/(\$\{h\})/g, item.h);
-              notice = notice.replace(/(\$\{m\})/g, item.m === undefined ? 0 : item.m);
-              notice = notice.replace(/(\$\{s\})/g, item.s === undefined ? 0 : item.s);
-              notice = notice.replace(/(\$\{title\})/g, item.title);
+    //   if(h === item.h) {
+    //     if((item.m === undefined && m === 0) || item.m === m) {
+    //       if((item.s === undefined && s === 0) || item.s === s) {
+    //         const now = `${h}:${m}:${s}`;
+    //         if(item.last !== now) {
+    //           let notice = item.notice;
+    //           notice = notice.replace(/(\$\{h\})/g, item.h);
+    //           notice = notice.replace(/(\$\{m\})/g, item.m === undefined ? 0 : item.m);
+    //           notice = notice.replace(/(\$\{s\})/g, item.s === undefined ? 0 : item.s);
+    //           notice = notice.replace(/(\$\{title\})/g, item.title);
   
-              new Notification(item.title, {body: notice});
+    //           new Notification(item.title, {body: notice});
   
-              item.last = now;
-            }
-          }
-        }
-      }
-    }
+    //           item.last = now;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
 
     if(autoLoad) {
       window.blur();
@@ -137,7 +188,7 @@ const init = e => {
 
     interval = setTimeout(func, 10);
   }
-  
+
   let interval = setTimeout(func, 10);
 
   // $.ajax({

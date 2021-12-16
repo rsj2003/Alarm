@@ -20,18 +20,23 @@
     <p><input type="number" id="hour" min="-1" value="0">시 <input type="number" id="minute" min="-1" value="0">분 <input type="number" id="second" min="-1" value="0" value="0">초</p>
     <p>알람 이름 : <input type="text" id="title"></p>
     <p>알람 설명 : <input type="text" id="notice"></p>
-    <button id="append-alarm">알람 추가</button>
+    <span><button id="append-alarm">알람 추가</button><button id="cancel">취소</button></span>
   </div>
   <div id="alarm-list"></div>
   <div id="timer-setting">
     <input type="radio" name="timer-type" id="set-timer" class="none" checked><input type="radio" name="timer-type" id="set-stopwatch" class="none">
     <h2><label for="set-timer">타이머</label><label for="set-stopwatch">스톱워치</label></h2>
+    <span><button id="start">시작</button><button id="stop">정지</button><button id="record">기록</button><button id="reset">초기화</button></span>
+    <p><input type="number" id="timer-hour" min="-1" value="0">시 <input type="number" id="timer-minute" min="-1" value="0">분 <input type="number" id="timer-second" min="-1" value="0" value="0">초</p>
   </div>
+  <div id="record-list"></div>
   <div id="time" class="main-timer timer">
-    <span class="h"></span>:<span class="m"></span>:<span class="s"></span>
+    <span class="text-color"><span class="h"></span>:<span class="m"></span>:<span class="s"></span></span>
+    <span class="text-background"><span class="h"></span>:<span class="m"></span>:<span class="s"></span></span>
   </div>
   <div id="timer" class="sub-timer timer">
-    <span class="h"></span>:<span class="m"></span>:<span class="s"></span>
+    <span class="text-color"><span class="h"></span>:<span class="m"></span>:<span class="s"></span></span>
+    <span class="text-background"><span class="h"></span>:<span class="m"></span>:<span class="s"></span></span>
   </div>
   <div id="main-background-timer" class="timer">
     88:88:88

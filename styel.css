@@ -6,3 +6,6 @@
 #main-background-timer{font-size: 200px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #3331;}
 .sub-timer{font-size: 70px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% + 120px)); color: #333;}
 #sub-background-timer{font-size: 70px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, calc(-50% + 120px)); color: #3331;}
+
+.text-color, .text-background{position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+.text-color{z-index: 2;}
